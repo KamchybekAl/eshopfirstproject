@@ -1,9 +1,8 @@
 package com.example.eshopfirstproject.controller;
 
 import com.example.eshopfirstproject.dto.AuthRequest;
-import com.example.eshopfirstproject.dto.Product;
 import com.example.eshopfirstproject.entity.UserInfo;
-import com.example.eshopfirstproject.service.JwtService;
+import com.example.eshopfirstproject.security.jwt.JwtService;
 import com.example.eshopfirstproject.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,11 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/products")
-public class ProductController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
     private ProductService service;
@@ -37,28 +34,47 @@ public class ProductController {
         return service.addUser(userInfo);
     }
 
-    @GetMapping("/all")
+//    @PutMapping("updateUser")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    public UserInfo update(@RequestBody UserInfo userInfo){
+//        return service.updateUser(userInfo);
+//    }
+
+//    @GetMapping("/all")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    public List<ProductDto> getAllTheProducts() {
+//        return service.getProducts();
+//    }
+
+    @DeleteMapping("/deleteUser")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public List<Product> getAllTheProducts() {
-        return service.getProducts();
+    public void delete(@RequestParam int id){
+        service.deleteUser(id);
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    public Product getProductById(@PathVariable int id) {
-        return service.getProduct(id);
-    }
+//    @GetMapping("/{id}")
+//    @PreAuthorize("hasAuthority('ROLE_USER')")
+//    public ProductDto getProductById(@PathVariable Integer id) {
+//        return service.getProduct(id);
+//    }
+//
+
+
+
+
+
+
 
 
     @PostMapping("/authenticate")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate
+                (new UsernamePasswordAuthenticationToken
+                (authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
             return jwtService.generateToken(authRequest.getUsername());
         } else {
             throw new UsernameNotFoundException("invalid user request !");
         }
-
-
     }
 }

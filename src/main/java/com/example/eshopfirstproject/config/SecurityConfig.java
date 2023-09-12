@@ -1,6 +1,7 @@
 package com.example.eshopfirstproject.config;
 
-import com.example.eshopfirstproject.filter.JwtAuthFilter;
+import com.example.eshopfirstproject.security.jwt.JwtAuthFilter;
+import com.example.eshopfirstproject.security.UserInfoUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,15 +29,7 @@ public class SecurityConfig {
     @Bean
     //authentication
     public UserDetailsService userDetailsService() {
-//        UserDetails admin = User.withUsername("Basant")
-//                .password(encoder.encode("Pwd1"))
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user = User.withUsername("John")
-//                .password(encoder.encode("Pwd2"))
-//                .roles("USER","ADMIN","HR")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin, user);
+
         return new UserInfoUserDetailsService();
     }
 
@@ -44,9 +37,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/products/new","/products/authenticate").permitAll()
+                .requestMatchers("/user/new","/user/authenticate").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/products/**")
+                .authorizeHttpRequests().requestMatchers("/user/**","/api/v1/category/**")
                 .authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

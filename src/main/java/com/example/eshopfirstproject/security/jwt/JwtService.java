@@ -1,4 +1,4 @@
-package com.example.eshopfirstproject.service;
+package com.example.eshopfirstproject.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

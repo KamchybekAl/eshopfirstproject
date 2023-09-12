@@ -1,4 +1,4 @@
-package com.example.eshopfirstproject.config;
+package com.example.eshopfirstproject.security;
 
 import com.example.eshopfirstproject.entity.UserInfo;
 import com.example.eshopfirstproject.repository.UserInfoRepository;
