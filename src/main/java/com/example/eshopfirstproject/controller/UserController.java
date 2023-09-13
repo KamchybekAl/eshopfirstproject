@@ -1,9 +1,11 @@
 package com.example.eshopfirstproject.controller;
 
+import com.example.eshopfirstproject.Mapper.UserInfoMapper;
 import com.example.eshopfirstproject.dto.AuthRequest;
+import com.example.eshopfirstproject.dto.UserInfoDto;
 import com.example.eshopfirstproject.entity.UserInfo;
 import com.example.eshopfirstproject.security.jwt.JwtService;
-import com.example.eshopfirstproject.service.ProductService;
+import com.example.eshopfirstproject.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,12 +14,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    private ProductService service;
+    private UserInfoMapper userInfoMapper;
+    @Autowired
+    private UserDetailService userDetailService;
     @Autowired
     private JwtService jwtService;
 
@@ -31,40 +37,33 @@ public class UserController {
 
     @PostMapping("/new")
     public String addNewUser(@RequestBody UserInfo userInfo) {
-        return service.addUser(userInfo);
+        return userDetailService.addUser(userInfo);
     }
 
-//    @PutMapping("updateUser")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    public UserInfo update(@RequestBody UserInfo userInfo){
-//        return service.updateUser(userInfo);
-//    }
+    @GetMapping("/findAll")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public List<UserInfoDto> findAll() {
+        return userDetailService.findAll();
+    }
 
-//    @GetMapping("/all")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    public List<ProductDto> getAllTheProducts() {
-//        return service.getProducts();
-//    }
+    @GetMapping("/findById")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public UserInfoDto findById(@RequestParam Integer id) {
+        return userDetailService.findById(id);
+    }
+
+    @PutMapping("updateUser")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public UserInfoDto updateUser(@RequestBody UserInfoDto userInfoDto){
+        return userDetailService.updateUserInfo(userInfoDto);
+    }
+
 
     @DeleteMapping("/deleteUser")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@RequestParam int id){
-        service.deleteUser(id);
+        userDetailService.deleteUser(id);
     }
-
-//    @GetMapping("/{id}")
-//    @PreAuthorize("hasAuthority('ROLE_USER')")
-//    public ProductDto getProductById(@PathVariable Integer id) {
-//        return service.getProduct(id);
-//    }
-//
-
-
-
-
-
-
-
 
     @PostMapping("/authenticate")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {

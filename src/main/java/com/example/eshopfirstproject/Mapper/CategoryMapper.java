@@ -5,7 +5,7 @@ import com.example.eshopfirstproject.entity.Category;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CategiryMapper {
+public class CategoryMapper {
 
     //From entity to dto
     public CategoryDto mapToCategoryDto(Category category) {

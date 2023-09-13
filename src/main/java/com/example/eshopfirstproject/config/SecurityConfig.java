@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/user/new","/user/authenticate").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/user/**","/api/v1/category/**")
+                .authorizeHttpRequests().requestMatchers("/user/**","/category/**","/basket/**","/order/**","/price/**","/product/**")
                 .authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
