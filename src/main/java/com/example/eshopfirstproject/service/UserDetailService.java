@@ -26,12 +26,8 @@ public class UserDetailService {
     private UserInfoMapper userInfoMapper;
 
 
-    public String addUser(UserInfoDto userInfoDto) {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setName(userInfoDto.getName());
-        userInfo.setEmail(userInfoDto.getEmail());
-        userInfo.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
-        userInfo.setRoles(userInfoDto.getRoles());
+    public String addUser(UserInfo userInfo) {
+        userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         userInfoRepository.save(userInfo);
         return "user added to system ";
     }

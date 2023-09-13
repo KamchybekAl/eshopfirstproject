@@ -20,11 +20,11 @@ public class Price {
     Long id;
     Double price;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime startDate;
+    LocalDateTime startDate;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime endDate;
+    LocalDateTime endDate;
     @ManyToOne
     @JoinColumn(name = "product_id",referencedColumnName = "id")
-    private Product product;
+    Product product;
 
 }
